@@ -43,24 +43,36 @@ h1 {
 
 .btn {
   border: none;
-  border-radius: 30px;
-  padding: 15px 35px;
-  font-size: 18px;
+  border-radius: 999px; /* ULTRA REDONDO */
+  padding: 18px 46px;
+  font-size: 20px;
+  font-weight: 600;
   cursor: pointer;
   z-index: 3;
+  transition: 
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
 }
 
 #siBtn {
-  background: #ff6f91;
+  background: linear-gradient(135deg, #ff6f91, #ff4d6d);
   color: white;
-  margin-bottom: 20px;
+}
+
+#siBtn:hover {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+#siBtn:active {
+  transform: scale(0.95);
 }
 
 #noBtn {
-  background: #f67280;
+  background: linear-gradient(135deg, #f67280, #e85d75);
   color: white;
-  position: absolute;
-  bottom: 120px;
 }
 
 .floating {
@@ -204,5 +216,6 @@ h1 {
 
 </body>
 </html>
+
 
 
