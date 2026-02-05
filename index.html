@@ -2,22 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>¿Quieres salir conmigo?</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(135deg, #ffe6e6, #ffc2d1, #ffa6c9);
+  background: linear-gradient(135deg, #ffe6f0, #ffc2d9);
   font-family: 'Quicksand', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,54 +36,37 @@ body {
 h1 {
   font-family: 'Pacifico', cursive;
   color: #c70039;
-  font-size: 2.5em;
-  margin-bottom: 50px;
   text-align: center;
+  margin-bottom: 40px;
   z-index: 3;
 }
 
 .btn {
-  padding: 15px 30px;
-  font-size: 18px;
   border: none;
-  border-radius: 25px;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-size: 18px;
   cursor: pointer;
-  position: absolute;
   z-index: 3;
-  transition: transform 0.4s ease, left 0.4s ease, top 0.4s ease;
 }
 
 #siBtn {
-  background-color: #ff6f91;
+  background: #ff6f91;
   color: white;
-  position: relative;
-}
-
-#siBtn:hover {
-  transform: scale(1.1);
+  margin-bottom: 20px;
 }
 
 #noBtn {
-  background-color: #f67280;
+  background: #f67280;
   color: white;
-}
-
-.firma {
   position: absolute;
-  bottom: 10px;
-  right: 15px;
-  font-family: 'Pacifico', cursive;
-  font-size: 14px;
-  color: #a52a2a;
-  opacity: 0.8;
-  z-index: 3;
+  bottom: 120px;
 }
 
-/* ===== FLOTANTES ===== */
 .floating {
   position: absolute;
+  font-size: 26px;
   animation: float linear infinite;
-  opacity: 0.8;
   z-index: 1;
 }
 
@@ -84,80 +75,134 @@ h1 {
     transform: translateY(110vh) rotate(0deg);
     opacity: 0;
   }
-  50% {
-    opacity: 1;
-  }
+  50% { opacity: 1; }
   to {
     transform: translateY(-10vh) rotate(360deg);
     opacity: 0;
   }
 }
+
+/* ===== MODAL ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: #fff0f6;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  animation: pop .4s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>¿Quieres salir conmigo? 💘</h1>
+<div class="container">
+  <h1>¿Quieres salir conmigo? 💘</h1>
 
-<button id="siBtn" class="btn">Sí 💕</button>
-<button id="noBtn" class="btn">No 😅</button>
+  <button id="siBtn">Sí 💕</button>
+  <button id="noBtn">No 😅</button>
+</div>
 
-<div class="firma">@JoseJuanFTO</div>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2>Sabía que dirías que sí 💖</h2>
+    <p>Prometo que será especial ✨</p>
+  </div>
+</div>
 
-<!-- 🎵 MÚSICA DE FONDO -->
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/audio/2023/03/07/audio_2b7d1fa7bb.mp3" type="audio/mpeg">
+<!-- 🎵 Música -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/07/audio_2b7d1fa7bb.mp3">
 </audio>
 
 <script>
 (() => {
   const noBtn = document.getElementById('noBtn');
   const siBtn = document.getElementById('siBtn');
-  const music = document.getElementById('bgMusic');
+  const modal = document.getElementById('modal');
+  const music = document.getElementById('music');
 
   const ICONS = ['💖','⭐','👑'];
-  const MAX_FLOATING = 40;
 
-  /* ===== Música (se activa al primer click por políticas del navegador) ===== */
-  document.body.addEventListener('click', () => {
+  /* ===== MÚSICA ===== */
+  document.body.addEventListener('touchstart', () => {
     music.volume = 0.3;
     music.play().catch(()=>{});
   }, { once: true });
 
-  /* ===== Movimiento fluido del NO ===== */
-  function moveNoSmooth() {
-    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-
-    noBtn.style.left = Math.random() * maxX + 'px';
-    noBtn.style.top = Math.random() * maxY + 'px';
+  /* ===== NO fluido ===== */
+  function moveNo() {
+    const x = Math.random() * 200 - 100;
+    const y = Math.random() * 200 - 100;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  noBtn.addEventListener('mouseenter', moveNoSmooth);
+  noBtn.addEventListener('touchstart', moveNo);
+  noBtn.addEventListener('pointerenter', moveNo);
 
+  /* ===== SÍ ===== */
   siBtn.addEventListener('click', () => {
-    alert('Sabía que dirías que sí 😏💖');
+    navigator.vibrate?.(200);
+    localStorage.setItem('respuesta', 'SI');
+    modal.style.display = 'flex';
+    launchConfetti();
+    sendEmail();
   });
 
-  /* ===== Flotantes infinitos ===== */
-  function createFloating() {
-    if (document.querySelectorAll('.floating').length >= MAX_FLOATING) return;
-
+  /* ===== FLOTANTES ===== */
+  setInterval(() => {
     const el = document.createElement('div');
     el.className = 'floating';
-    el.textContent = ICONS[Math.floor(Math.random() * ICONS.length)];
-
-    el.style.left = Math.random() * window.innerWidth + 'px';
-    el.style.fontSize = 20 + Math.random() * 30 + 'px';
-    el.style.animationDuration = 6 + Math.random() * 6 + 's';
-
+    el.textContent = ICONS[Math.floor(Math.random()*ICONS.length)];
+    el.style.left = Math.random()*100 + '%';
+    el.style.animationDuration = 6 + Math.random()*6 + 's';
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 12000);
+    setTimeout(()=>el.remove(),12000);
+  }, 500);
+
+  /* ===== CONFETTI ===== */
+  function launchConfetti() {
+    for(let i=0;i<30;i++){
+      const c = document.createElement('div');
+      c.className='floating';
+      c.textContent='💖';
+      c.style.left='50%';
+      c.style.fontSize='24px';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3000);
+    }
   }
 
-  setInterval(createFloating, 400);
+  /* ===== EMAIL (FORMSpree) ===== */
+  function sendEmail(){
+    fetch("https://formspree.io/f/xzdapkoo", {   // 🔴 CAMBIA ESTO
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: "Dijo que SÍ 💖"
+      })
+    });
+  }
 })();
 </script>
 
 </body>
 </html>
+
+
