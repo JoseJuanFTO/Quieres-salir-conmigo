@@ -71,8 +71,10 @@ h1 {
 }
 
 #noBtn {
-  background: linear-gradient(135deg, #f67280, #e85d75);
-  color: white;
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  transform: translate(-50%, -50%);
 }
 
 .floating {
@@ -160,10 +162,21 @@ h1 {
 
   /* ===== NO fluido ===== */
   function moveNo() {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 200 - 100;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-  }
+  const container = document.querySelector('.container');
+  const cRect = container.getBoundingClientRect();
+  const bRect = noBtn.getBoundingClientRect();
+
+  const padding = 20;
+
+  const maxX = cRect.width - bRect.width - padding;
+  const maxY = cRect.height - bRect.height - padding;
+
+  const x = Math.random() * maxX - maxX / 2;
+  const y = Math.random() * maxY - maxY / 2;
+
+  noBtn.style.transition = 'transform .35s cubic-bezier(.25,.8,.25,1)';
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
 
   noBtn.addEventListener('touchstart', moveNo);
   noBtn.addEventListener('pointerenter', moveNo);
@@ -216,6 +229,7 @@ h1 {
 
 </body>
 </html>
+
 
 
 
