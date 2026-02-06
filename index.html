@@ -217,12 +217,23 @@ h1 {
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),12000);
   }, 500);
-})();
+
+  sendEmail();
+
+  alert("Sabía que dirías que sí 💕");
+});
+
+/* ===== 📧 EMAIL (FORMSpREE) ===== */
+function sendEmail(){
+  fetch("https://formspree.io/f/xzdapkoo", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: "Dijo que SÍ 💖"
+    })
+  });
+}
 </script>
 
 </body>
 </html>
-
-
-
-
