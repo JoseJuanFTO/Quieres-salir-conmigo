@@ -38,19 +38,17 @@ h1 {
   color: #c70039;
   text-align: center;
   margin-bottom: 40px;
-  z-index: 3;
+  z-index: 1;
 }
 
 /* BOTONES PREMIUM */
 .btn {
-  border: none;
-  border-radius: 999px;
-  padding: 18px 46px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 3;
-  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  border-radius: 30px;
 }
 
 /* SÍ LATIENDO */
@@ -140,8 +138,8 @@ h1 {
 </div>
 
 <!-- 🎵 Música -->
-<audio id="music" loop>
-  <source src="music.mp3">
+<audio autoplay loop>
+  <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -228,6 +226,7 @@ h1 {
 
 </body>
 </html>
+
 
 
 
