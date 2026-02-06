@@ -4,76 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>¿Quieres ir por unos chocolates conmigo? 💖</title>
+<title>¿Quieres ir por chocolates conmigo?</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-}
+* { box-sizing: border-box; }
 
-html, body {
-  width: 100%;
-  height: 100%;
+body {
+  margin: 0;
+  height: 100vh;
   overflow: hidden;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #ffe6f0, #ffc2d9);
+  font-family: 'Quicksand', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-  position: relative;
   width: 100%;
+  max-width: 420px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 20px;
+  align-items: center;
+  position: relative;
 }
 
 h1 {
-  color: #fff;
-  font-size: 1.8rem;
+  font-family: 'Pacifico', cursive;
+  color: #c70039;
+  text-align: center;
   margin-bottom: 40px;
-  z-index: 5;
+  z-index: 1;
 }
 
-.buttons {
-  position: relative;
-  width: 100%;
-  height: 200px;
-}
-
-button {
+/* BOTONES */
+.btn {
   position: absolute;
-  padding: 18px 36px;
-  font-size: 1.2rem;
+  top: 60%;
+  left: 50%;
+  transform: none;
+  z-index: 10;
+  border-radius: 30px;
+  padding: 14px 26px;
+  font-size: 18px;
   border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-/* 💖 BOTÓN SÍ */
-#yesBtn {
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff4d6d;
+/* SÍ */
+#siBtn {
+  background: linear-gradient(135deg, #ff6f91, #ff4d6d);
   color: white;
-  animation: latido 1.8s infinite;
-  z-index: 10;
+  animation: heartbeat 2.2s ease-in-out infinite;
 }
 
-/* 🚫 BOTÓN NO */
+/* NO */
 #noBtn {
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff7aa2;
+  background: linear-gradient(135deg, #f67280, #e85d75);
   color: white;
-  z-index: 10;
+  top: 70%;
+  z-index: 20;
+}
+
+/* LATIDO */
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.08); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.08); }
+  70%  { transform: scale(1); }
+}
+
+/* FLOTANTES */
+.floating {
+  position: absolute;
+  font-size: 26px;
+  animation: float linear infinite;
+  z-index: 1;
+}
+
+@keyframes float {
+  from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+}
+
+.modal-content {
+  background: #fff0f6;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  animation: pop .4s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* 🔇 BOTÓN MUTE */
@@ -81,19 +121,16 @@ button {
   position: fixed;
   top: 15px;
   right: 15px;
-  background: rgba(255,255,255,0.8);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  padding: 12px 14px;
-  font-size: 1.1rem;
+  border: none;
+  background: rgba(255, 111, 145, 0.9);
+  color: white;
+  font-size: 20px;
   cursor: pointer;
-  z-index: 20;
-}
-
-/* ❤️ Animación latido */
-@keyframes latido {
-  0% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.1); }
-  100% { transform: translateX(-50%) scale(1); }
+  z-index: 100;
+  box-shadow: 0 6px 15px rgba(0,0,0,.25);
 }
 </style>
 </head>
@@ -101,82 +138,88 @@ button {
 <body>
 
 <div class="container">
-  <h1>¿Quieres ir por unos chocolates conmigo? 🍫💖</h1>
+  <h1 id="title">¿Quieres ir por unos chocolates conmigo? 💘</h1>
 
-  <div class="buttons">
-    <button id="yesBtn">Sí 💕</button>
-    <button id="noBtn">No 🙈</button>
+  <button id="siBtn" class="btn">Sí 💕</button>
+  <button id="noBtn" class="btn">No 😅</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2>Sabía que dirías que sí 💖</h2>
+    <p>Tú dime por cuáles vamos ✨</p>
   </div>
 </div>
 
+<!-- 🔊 MUTE -->
 <button id="muteBtn">🔊</button>
 
-<!-- 🎵 AUDIO -->
-<audio id="bgMusic" loop>
-  <source src="https://josejuanfto.github.io/Quieres-salir-conmigo/music3.mp3" type="audio/mpeg">
+<!-- 🎵 Música -->
+<audio id="music" preload="auto" loop playsinline>
+  <source src="music3.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const music = document.getElementById("bgMusic");
-const muteBtn = document.getElementById("muteBtn");
+(() => {
+  const noBtn = document.getElementById('noBtn');
+  const siBtn = document.getElementById('siBtn');
+  const modal = document.getElementById('modal');
+  const music = document.getElementById('music');
+  const muteBtn = document.getElementById('muteBtn');
+  const title = document.getElementById('title');
 
-let isMuted = false;
-
-/* ▶️ AUTOPLAY CON INTERACCIÓN */
-document.addEventListener("click", () => {
-  music.play().catch(()=>{});
-}, { once:true });
-
-/* 🔇 MUTE / UNMUTE */
-muteBtn.addEventListener("click", () => {
-  isMuted = !isMuted;
-  music.muted = isMuted;
-  muteBtn.textContent = isMuted ? "🔇" : "🔊";
-});
-
-/* 🚫 MOVER NO (SIN SALIRSE) */
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("click", moveNo);
-
-function moveNo(){
-  const padding = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * (maxY - 200) + 200; // siempre debajo del texto
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
-
-/* 💖 CLICK EN SÍ */
-yesBtn.addEventListener("click", () => {
-  localStorage.setItem("respuesta", "SI 💖");
-
-  if (navigator.vibrate) {
-    navigator.vibrate([200,100,200]);
+  const ICONS = ['💖','⭐','👑'];
   }
 
-  sendEmail();
+  /* 🎵 MÚSICA */
+  function startMusic() {
+    music.volume = 0.3;
+    music.play().catch(()=>{});
+  }
 
-  alert("Sabía que dirías que sí 💕");
-});
+  document.addEventListener('click', startMusic, { once: true });
+  document.addEventListener('touchstart', startMusic, { once: true });
 
-/* ===== 📧 EMAIL (FORMSpREE) ===== */
-function sendEmail(){
-  fetch("https://formspree.io/f/xzdapkoo", {
-    method: "POST",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: "Dijo que SÍ 💖"
-    })
+  /* 🔇 MUTE */
+  muteBtn.addEventListener('click', () => {
+    music.muted = !music.muted;
+    muteBtn.textContent = music.muted ? '🔇' : '🔊';
   });
-}
+
+  /* 🏃 NO */
+  function moveNo() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    noBtn.style.transition = 'left .35s ease, top .35s ease';
+    noBtn.style.left = Math.random() * maxX + 'px';
+    noBtn.style.top = Math.random() * maxY + 'px';
+  }
+
+  noBtn.addEventListener('touchstart', moveNo);
+  noBtn.addEventListener('pointerenter', moveNo);
+
+  /* 💖 SÍ */
+  siBtn.addEventListener('click', () => {
+    navigator.vibrate?.(200);
+    localStorage.setItem('respuesta', 'SI');
+    modal.style.display = 'flex';
+  });
+
+  /* 🌟 FLOTANTES */
+  setInterval(() => {
+    const el = document.createElement('div');
+    el.className = 'floating';
+    el.textContent = ICONS[Math.floor(Math.random()*ICONS.length)];
+    el.style.left = Math.random()*100 + '%';
+    el.style.animationDuration = 6 + Math.random()*6 + 's';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),12000);
+  }, 500);
+})();
 </script>
 
 </body>
 </html>
-
