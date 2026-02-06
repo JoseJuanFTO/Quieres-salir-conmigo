@@ -155,15 +155,11 @@ h1 {
   /* ===== MÚSICA ===== */
 function startMusic() {
   music.volume = 0.3;
-  music.muted = false;
-  music.play().then(() => {
-    console.log('🎵 Música iniciada');
-  }).catch(err => {
-    console.log('❌ Error audio:', err);
-  });
+  music.play().catch(()=>{});
+}
 
-  document.removeEventListener('click', startMusic);
-  document.removeEventListener('touchstart', startMusic);
+document.addEventListener('click', startMusic, { once: true });
+document.addEventListener('touchstart', startMusic, { once: true });
 }
 
   /* ===== NO fluido ===== */
@@ -235,6 +231,7 @@ function startMusic() {
 
 </body>
 </html>
+
 
 
 
