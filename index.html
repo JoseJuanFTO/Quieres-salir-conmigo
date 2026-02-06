@@ -153,10 +153,17 @@ h1 {
   const ICONS = ['💖','⭐','👑'];
 
   /* ===== MÚSICA ===== */
-  document.body.addEventListener('touchstart', () => {
-    music.volume = 0.3;
-    music.play().catch(()=>{});
-  }, { once: true });
+ const music = document.getElementById('music');
+
+function startMusic() {
+  music.volume = 0.3;
+  music.play().catch(()=>{});
+  document.removeEventListener('click', startMusic);
+  document.removeEventListener('touchstart', startMusic);
+}
+
+document.addEventListener('click', startMusic);
+document.addEventListener('touchstart', startMusic);
 
   /* ===== NO fluido ===== */
   function moveNo() {
@@ -227,6 +234,7 @@ h1 {
 
 </body>
 </html>
+
 
 
 
