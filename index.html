@@ -186,12 +186,6 @@ function startMusic() {
 document.addEventListener('click', startMusic, { once: true });
 document.addEventListener('touchstart', startMusic, { once: true });
 
- const muteBtn = document.getElementById('muteBtn');
-
-muteBtn.addEventListener('click', () => {
-  music.muted = !music.muted;
-  muteBtn.textContent = music.muted ? '🔇' : '🔊';
-});
 
   /* ===== NO fluido ===== */
   function moveNo() {
@@ -262,6 +256,7 @@ muteBtn.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
