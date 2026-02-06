@@ -153,18 +153,11 @@ h1 {
   const ICONS = ['💖','⭐','👑'];
 
   /* ===== MÚSICA ===== */
- const music = document.getElementById('music');
-
-function startMusic() {
-  music.volume = 0.3;
-  music.play().catch(()=>{});
-  document.removeEventListener('click', startMusic);
-  document.removeEventListener('touchstart', startMusic);
-}
-
-document.addEventListener('click', startMusic);
-document.addEventListener('touchstart', startMusic);
-
+ document.body.addEventListener('touchstart',
+  () => { music.volume = 0.3;
+  music.play().catch(()=>{}); },
+  { once: true });
+  
   /* ===== NO fluido ===== */
   function moveNo() {
   const padding = 20;
@@ -234,6 +227,7 @@ document.addEventListener('touchstart', startMusic);
 
 </body>
 </html>
+
 
 
 
