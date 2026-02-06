@@ -176,13 +176,6 @@ h1 {
 
   const ICONS = ['💖','⭐','👑'];
 
- const muteBtn = document.getElementById('muteBtn');
-
-muteBtn.addEventListener('click', () => {
-  music.muted = !music.muted;
-  muteBtn.textContent = music.muted ? '🔇' : '🔊';
-});
-
   /* ===== MÚSICA ===== */
 function startMusic() {
   music.volume = 0.3;
@@ -262,6 +255,7 @@ document.addEventListener('touchstart', startMusic, { once: true });
 
 </body>
 </html>
+
 
 
 
