@@ -139,8 +139,8 @@ h1 {
 </div>
 
 <!-- 🎵 Música -->
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="music" preload="auto" loop playsinline>
+  <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -153,15 +153,23 @@ h1 {
   const ICONS = ['💖','⭐','👑'];
 
   /* ===== MÚSICA ===== */
+const music = document.getElementById('music');
+
 function startMusic() {
   music.volume = 0.3;
-  music.play().catch(()=>{});
+  music.muted = false;
+  music.play().then(() => {
+    console.log('🎵 Música iniciada');
+  }).catch(err => {
+    console.log('❌ Error audio:', err);
+  });
+
   document.removeEventListener('click', startMusic);
   document.removeEventListener('touchstart', startMusic);
 }
 
-document.addEventListener('click', startMusic);
-document.addEventListener('touchstart', startMusic);
+document.addEventListener('click', startMusic, { once: true });
+document.addEventListener('touchstart', startMusic, { once: true });
 
   /* ===== NO fluido ===== */
   function moveNo() {
@@ -232,6 +240,7 @@ document.addEventListener('touchstart', startMusic);
 
 </body>
 </html>
+
 
 
 
