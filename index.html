@@ -11,30 +11,6 @@
 <style>
 * { box-sizing: border-box; }
 
-<button id="muteBtn" aria-label="Silenciar música">🔊</button>
- 
-  #muteBtn {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 111, 145, 0.9);
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 100;
-  box-shadow: 0 6px 15px rgba(0,0,0,.25);
-  transition: transform .2s ease, background .2s ease;
-}
-
-#muteBtn:hover {
-  transform: scale(1.1);
-  background: rgba(255, 77, 109, 1);
-}
-
 body {
   margin: 0;
   height: 100vh;
@@ -65,24 +41,27 @@ h1 {
   z-index: 1;
 }
 
-/* BOTONES PREMIUM */
+/* BOTONES */
 .btn {
   position: absolute;
   top: 60%;
   left: 50%;
-  transform: none; /* 🔑 libera el movimiento */
+  transform: none;
   z-index: 10;
   border-radius: 30px;
+  padding: 14px 26px;
+  font-size: 18px;
+  border: none;
 }
 
-/* SÍ LATIENDO */
+/* SÍ */
 #siBtn {
   background: linear-gradient(135deg, #ff6f91, #ff4d6d);
   color: white;
   animation: heartbeat 2.2s ease-in-out infinite;
 }
 
-/* NO ROSA FIJO */
+/* NO */
 #noBtn {
   background: linear-gradient(135deg, #f67280, #e85d75);
   color: white;
@@ -99,6 +78,7 @@ h1 {
   70%  { transform: scale(1); }
 }
 
+/* FLOTANTES */
 .floating {
   position: absolute;
   font-size: 26px;
@@ -107,18 +87,12 @@ h1 {
 }
 
 @keyframes float {
-  from {
-    transform: translateY(110vh) rotate(0deg);
-    opacity: 0;
-  }
+  from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
   50% { opacity: 1; }
-  to {
-    transform: translateY(-10vh) rotate(360deg);
-    opacity: 0;
-  }
+  to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
@@ -126,7 +100,7 @@ h1 {
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 30;
 }
 
 .modal-content {
@@ -142,25 +116,44 @@ h1 {
   to { transform: scale(1); opacity: 1; }
 }
 
+/* 🔇 BOTÓN MUTE */
+#muteBtn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 111, 145, 0.9);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 6px 15px rgba(0,0,0,.25);
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>¿Quieres ir por unos chocolates conmigo? 💘</h1>
+  <h1 id="title">¿Quieres ir por unos chocolates conmigo? 💘</h1>
 
-<button id="siBtn" class="btn">Sí 💕</button>
-<button id="noBtn" class="btn">No 😅</button>
+  <button id="siBtn" class="btn">Sí 💕</button>
+  <button id="noBtn" class="btn">No 😅</button>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h2>Sabía que dirías que sí 💖</h2>
-    <p>Tu dime por cuales vamos ✨</p>
+    <p>Tú dime por cuáles vamos ✨</p>
   </div>
 </div>
+
+<!-- 🔊 MUTE -->
+<button id="muteBtn">🔊</button>
 
 <!-- 🎵 Música -->
 <audio id="music" preload="auto" loop playsinline>
@@ -173,50 +166,54 @@ h1 {
   const siBtn = document.getElementById('siBtn');
   const modal = document.getElementById('modal');
   const music = document.getElementById('music');
+  const muteBtn = document.getElementById('muteBtn');
+  const title = document.getElementById('title');
 
   const ICONS = ['💖','⭐','👑'];
 
-  /* ===== MÚSICA ===== */
-function startMusic() {
-  music.volume = 0.3;
-  music.play().catch(()=>{});
-}
+  /* 💾 PERSISTENCIA */
+  if (localStorage.getItem('respuesta') === 'SI') {
+    title.textContent =
+      'Ya me dijiste que sí 💖 ¿Cuándo vamos por los chocolates? 🍫✨';
+  }
 
-document.addEventListener('click', startMusic, { once: true });
-document.addEventListener('touchstart', startMusic, { once: true });
+  /* 🎵 MÚSICA */
+  function startMusic() {
+    music.volume = 0.3;
+    music.play().catch(()=>{});
+  }
 
+  document.addEventListener('click', startMusic, { once: true });
+  document.addEventListener('touchstart', startMusic, { once: true });
 
-  /* ===== NO fluido ===== */
+  /* 🔇 MUTE */
+  muteBtn.addEventListener('click', () => {
+    music.muted = !music.muted;
+    muteBtn.textContent = music.muted ? '🔇' : '🔊';
+  });
+
+  /* 🏃 NO */
   function moveNo() {
-  const padding = 20;
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
-
-  const maxX = window.innerWidth - btnWidth - padding;
-  const maxY = window.innerHeight - btnHeight - padding;
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.transition = 'left .35s ease, top .35s ease';
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
-}
+    noBtn.style.transition = 'left .35s ease, top .35s ease';
+    noBtn.style.left = Math.random() * maxX + 'px';
+    noBtn.style.top = Math.random() * maxY + 'px';
+  }
 
   noBtn.addEventListener('touchstart', moveNo);
   noBtn.addEventListener('pointerenter', moveNo);
 
-  /* ===== SÍ ===== */
+  /* 💖 SÍ */
   siBtn.addEventListener('click', () => {
     navigator.vibrate?.(200);
     localStorage.setItem('respuesta', 'SI');
     modal.style.display = 'flex';
-    launchConfetti();
-    sendEmail();
   });
 
-  /* ===== FLOTANTES ===== */
+  /* 🌟 FLOTANTES */
   setInterval(() => {
     const el = document.createElement('div');
     el.className = 'floating';
@@ -226,55 +223,10 @@ document.addEventListener('touchstart', startMusic, { once: true });
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),12000);
   }, 500);
-
-  /* ===== CONFETTI ===== */
-  function launchConfetti() {
-    for(let i=0;i<30;i++){
-      const c = document.createElement('div');
-      c.className='floating';
-      c.textContent='💖';
-      c.style.left='50%';
-      c.style.fontSize='24px';
-      document.body.appendChild(c);
-      setTimeout(()=>c.remove(),3000);
-    }
-  }
-
-  /* ===== EMAIL (FORMSpree) ===== */
-  function sendEmail(){
-    fetch("https://formspree.io/f/xzdapkoo", {   // 🔴 CAMBIA ESTO
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: "Dijo que SÍ 💖"
-      })
-    });
-  }
 })();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
