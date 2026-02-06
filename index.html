@@ -46,7 +46,7 @@ h1 {
   position: absolute;
   top: 60%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: none; /* 🔑 libera el movimiento */
   z-index: 10;
   border-radius: 30px;
 }
@@ -153,11 +153,16 @@ h1 {
   const ICONS = ['💖','⭐','👑'];
 
   /* ===== MÚSICA ===== */
- document.body.addEventListener('touchstart',
-  () => { music.volume = 0.3;
-  music.play().catch(()=>{}); },
-  { once: true });
-  
+function startMusic() {
+  music.volume = 0.3;
+  music.play().catch(()=>{});
+  document.removeEventListener('click', startMusic);
+  document.removeEventListener('touchstart', startMusic);
+}
+
+document.addEventListener('click', startMusic);
+document.addEventListener('touchstart', startMusic);
+
   /* ===== NO fluido ===== */
   function moveNo() {
   const padding = 20;
@@ -227,6 +232,7 @@ h1 {
 
 </body>
 </html>
+
 
 
 
