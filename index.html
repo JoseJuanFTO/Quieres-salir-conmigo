@@ -35,7 +35,6 @@
   background: rgba(255, 77, 109, 1);
 }
 
-
 body {
   margin: 0;
   height: 100vh;
@@ -177,6 +176,13 @@ h1 {
 
   const ICONS = ['💖','⭐','👑'];
 
+ const muteBtn = document.getElementById('muteBtn');
+
+muteBtn.addEventListener('click', () => {
+  music.muted = !music.muted;
+  muteBtn.textContent = music.muted ? '🔇' : '🔊';
+});
+
   /* ===== MÚSICA ===== */
 function startMusic() {
   music.volume = 0.3;
@@ -256,6 +262,7 @@ document.addEventListener('touchstart', startMusic, { once: true });
 
 </body>
 </html>
+
 
 
 
