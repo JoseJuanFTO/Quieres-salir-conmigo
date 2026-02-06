@@ -62,7 +62,8 @@ h1 {
 #noBtn {
   background: linear-gradient(135deg, #f67280, #e85d75);
   color: white;
-  position: absolute;
+  top: 70%;
+  z-index: 20;
 }
 
 /* LATIDO */
@@ -125,8 +126,8 @@ h1 {
 <div class="container">
   <h1>¿Quieres ir por unos chocolates conmigo? 💘</h1>
 
-  <button id="siBtn">Sí 💕</button>
-  <button id="noBtn">No 😅</button>
+<button id="siBtn" class="btn">Sí 💕</button>
+<button id="noBtn" class="btn">No 😅</button>
 </div>
 
 <!-- MODAL -->
@@ -138,7 +139,7 @@ h1 {
 </div>
 
 <!-- 🎵 Música -->
-<audio autoplay loop>
+<audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -226,6 +227,7 @@ h1 {
 
 </body>
 </html>
+
 
 
 
