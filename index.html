@@ -41,7 +41,6 @@ h1 {
   z-index: 1;
 }
 
-/* BOTONES */
 .btn {
   position: absolute;
   top: 60%;
@@ -54,14 +53,12 @@ h1 {
   border: none;
 }
 
-/* SÍ */
 #siBtn {
   background: linear-gradient(135deg, #ff6f91, #ff4d6d);
   color: white;
   animation: heartbeat 2.2s ease-in-out infinite;
 }
 
-/* NO */
 #noBtn {
   background: linear-gradient(135deg, #f67280, #e85d75);
   color: white;
@@ -69,7 +66,6 @@ h1 {
   z-index: 20;
 }
 
-/* LATIDO */
 @keyframes heartbeat {
   0%   { transform: scale(1); }
   14%  { transform: scale(1.08); }
@@ -78,7 +74,6 @@ h1 {
   70%  { transform: scale(1); }
 }
 
-/* FLOTANTES */
 .floating {
   position: absolute;
   font-size: 26px;
@@ -92,7 +87,6 @@ h1 {
   to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
-/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
@@ -116,7 +110,6 @@ h1 {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* 🔇 BOTÓN MUTE */
 #muteBtn {
   position: fixed;
   top: 15px;
@@ -139,12 +132,10 @@ h1 {
 
 <div class="container">
   <h1 id="title">¿Quieres ir por unos chocolates conmigo? 💘</h1>
-
   <button id="siBtn" class="btn">Sí 💕</button>
   <button id="noBtn" class="btn">No 😅</button>
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h2>Sabía que dirías que sí 💖</h2>
@@ -152,10 +143,8 @@ h1 {
   </div>
 </div>
 
-<!-- 🔊 MUTE -->
 <button id="muteBtn">🔊</button>
 
-<!-- 🎵 Música -->
 <audio id="music" preload="auto" loop playsinline>
   <source src="music3.mp3" type="audio/mpeg">
 </audio>
@@ -167,11 +156,9 @@ h1 {
   const modal = document.getElementById('modal');
   const music = document.getElementById('music');
   const muteBtn = document.getElementById('muteBtn');
-  const title = document.getElementById('title');
 
   const ICONS = ['💖','⭐','👑'];
 
-  /* 🎵 MÚSICA */
   function startMusic() {
     music.volume = 0.3;
     music.play().catch(()=>{});
@@ -180,13 +167,11 @@ h1 {
   document.addEventListener('click', startMusic, { once: true });
   document.addEventListener('touchstart', startMusic, { once: true });
 
-  /* 🔇 MUTE */
   muteBtn.addEventListener('click', () => {
     music.muted = !music.muted;
     muteBtn.textContent = music.muted ? '🔇' : '🔊';
   });
 
-  /* 🏃 NO */
   function moveNo() {
     const padding = 20;
     const maxX = window.innerWidth - noBtn.offsetWidth - padding;
@@ -200,14 +185,13 @@ h1 {
   noBtn.addEventListener('touchstart', moveNo);
   noBtn.addEventListener('pointerenter', moveNo);
 
-  /* 💖 SÍ */
   siBtn.addEventListener('click', () => {
     navigator.vibrate?.(200);
     localStorage.setItem('respuesta', 'SI');
     modal.style.display = 'flex';
+    sendEmail(); // 📧 SOLO AQUÍ
   });
 
-  /* 🌟 FLOTANTES */
   setInterval(() => {
     const el = document.createElement('div');
     el.className = 'floating';
@@ -217,6 +201,17 @@ h1 {
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),12000);
   }, 500);
+
+  /* ===== EMAIL (FORMSpree) ===== */
+  function sendEmail(){
+    fetch("https://formspree.io/f/xzdapkoo", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: "Dijo que SÍ 💖"
+      })
+    });
+  }
 })();
 </script>
 
